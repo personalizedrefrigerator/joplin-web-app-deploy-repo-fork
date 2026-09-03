@@ -25,6 +25,22 @@ jobs:
         with:
           repository: 'laurent22/joplin'
           ref: dev
+      - name: Checkout latest release branch
+        run: |
+          # --format '%(refname:short)' provides the branch name without a "current branch" marker
+          # or a "refs/heads" prefix:
+          LATEST_RELEASE="release-$(git branch --list --format '%(refname:short)' \
+              | grep -P 'release-\d+\.\d+' \
+              | sed 's/^release-//' \
+              | sort --version-sort \
+              | tail -n1)"
+          if [[ "$LATEST_RELEASE" = "release-" ]]; then
+            echo "No release branches found."
+            exit 1
+          fi
+
+          echo "Switching to branch: $LATEST_RELEASE"
+          git checkout "$LATEST_RELEASE"
       - name: Prepare yarn
         run: corepack enable
       - name: Install dependencies
