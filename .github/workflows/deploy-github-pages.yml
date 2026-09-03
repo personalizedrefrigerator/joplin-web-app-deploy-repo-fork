@@ -25,13 +25,15 @@ jobs:
         with:
           repository: 'laurent22/joplin'
           ref: dev
+      - name: Fetch all branches
+        # actions/checkout only fetches the current branch:
+        run: git fetch --depth=1
       - name: Checkout latest release branch
         run: |
-          # actions/checkout only fetches the current branch:
-          git fetch --depth=1
+          git for-each-ref --format '%(refname:short)' 'refs/heads/release-*'
           # --format '%(refname:short)' provides the branch name without a "current branch" marker
           # or a "refs/heads" prefix:
-          RELEASE_BRANCHES="$(git for-each-ref --format '%(refname:short)' 'refs/heads/release-*'\
+          RELEASE_BRANCHES="$(git for-each-ref --format '%(refname:short)' 'refs/heads/release-*' \
             | grep -P '^release-[0-9]+\.[0-9]+$')"
           echo "Found release branches: $RELEASE_BRANCHES"
           
