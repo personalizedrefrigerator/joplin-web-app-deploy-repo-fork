@@ -27,6 +27,7 @@ jobs:
           ref: dev
       - name: Checkout latest release branch
         run: |
+          # actions/checkout only fetches the current branch:
           git fetch --depth=1
           # --format '%(refname:short)' provides the branch name without a "current branch" marker
           # or a "refs/heads" prefix:
