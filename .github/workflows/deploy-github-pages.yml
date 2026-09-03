@@ -30,7 +30,7 @@ jobs:
           # --format '%(refname:short)' provides the branch name without a "current branch" marker
           # or a "refs/heads" prefix:
           LATEST_RELEASE="release-$(git branch --list --format '%(refname:short)' \
-              | grep -P 'release-\d+\.\d+' \
+              | grep -P '^release-[0-9]+\.[0-9]+$' \
               | sed 's/^release-//' \
               | sort --version-sort \
               | tail -n1)"
