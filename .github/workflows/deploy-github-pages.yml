@@ -29,8 +29,10 @@ jobs:
         run: |
           # --format '%(refname:short)' provides the branch name without a "current branch" marker
           # or a "refs/heads" prefix:
-          LATEST_RELEASE="release-$(git branch --list --format '%(refname:short)' \
-              | grep -P '^release-[0-9]+\.[0-9]+$' \
+          RELEASE_BRANCHES="$(git branch --list --format '%(refname:short)' | grep -P '^release-[0-9]+\.[0-9]+$')"
+          echo "Found release branches: $RELEASE_BRANCHES"
+          
+          LATEST_RELEASE="release-$(echo "$RELEASE_BRANCHES" \
               | sed 's/^release-//' \
               | sort --version-sort \
               | tail -n1)"
