@@ -30,11 +30,12 @@ jobs:
         run: git fetch --depth=1
       - name: Checkout latest release branch
         run: |
-          git for-each-ref --format '%(refname:short)' 'refs/heads/release-*'
           # --format '%(refname:short)' provides the branch name without a "current branch" marker
           # or a "refs/heads" prefix:
-          RELEASE_BRANCHES="$(git for-each-ref --format '%(refname:short)' 'refs/heads/release-*' \
-            | grep -P '^release-[0-9]+\.[0-9]+$')"
+          ALL_BRANCHES="$(git for-each-ref --format '%(refname:short)' 'refs/heads/release-*')"
+          echo "All branches: $ALL_BRANCHES"
+          
+          RELEASE_BRANCHES="$(echo "$ALL_BRANCHES" | grep -P '^release-[0-9]+\.[0-9]+$')"
           echo "Found release branches: $RELEASE_BRANCHES"
           
           LATEST_RELEASE="release-$(echo "$RELEASE_BRANCHES" \
