@@ -30,10 +30,10 @@ jobs:
         run: git fetch --depth=1
       - name: Checkout latest release branch
         run: |
-          ALL_BRANCHES="$(git for-each-ref --format '%(refname:short)')"
-          echo "All branches: $ALL_BRANCHES"
+          ALL_BRANCHES="$(git for-each-ref --format '%(refname)')"
+          echo "All refs: $ALL_BRANCHES"
 
-          RELEASE_BRANCHES="$(echo "$ALL_BRANCHES" | grep -P '^release-[0-9]+\.[0-9]+$')"
+          RELEASE_BRANCHES="$(echo "$ALL_BRANCHES" | sed 's/^\/refs\/heads\///' | grep -P '^release-[0-9]+\.[0-9]+$')"
           echo "Found release branches: $RELEASE_BRANCHES"
           
           LATEST_RELEASE="release-$(echo "$RELEASE_BRANCHES" \
